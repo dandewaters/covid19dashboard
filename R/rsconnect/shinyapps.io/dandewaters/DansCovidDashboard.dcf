@@ -1,0 +1,14 @@
+name: DansCovidDashboard
+title: DansCovidDashboard
+username:
+account: dandewaters
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6950598
+bundleId: 6280118
+url: https://dandewaters.shinyapps.io/DansCovidDashboard/
+when: 1662608729.30291
+lastSyncTime: 1662608729.30292
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: other/testing.Rmd

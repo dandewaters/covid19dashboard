@@ -1,0 +1,90 @@
+---
+title: "Covid19 Analytics Package"
+author: "Daniel DeWaters"
+date: "8/16/2021"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+library(plotly)
+library(tidyverse)
+library(lubridate)
+library(data.table)
+library(purrr)
+```
+
+```{r get_data}
+source("../data_retrieval/make_data_file_name.R")
+todays_case_data_file_name <- make_data_file_name(today(), "case")
+todays_vaccine_data_file_name <- make_data_file_name(today(), "vaccine")
+source("../data_retrieval/get_covid_case_data.R")
+source("../data_retrieval/get_covid_vaccine_data.R")
+source("../data_retrieval/get_data.R")
+```
+
+```{r md_data}
+md_cases_df <-
+  case_data %>%
+  filter(country_region == "United States",
+         state_province == "Maryland",
+         county_district == "Overall")
+
+md_vaccine_df <-
+  vaccine_data %>%
+  filter(date_type == "Admin", location == "Maryland")
+```
+
+```{r}
+md_cases_df %>%
+  filter(!is.na(new_cases),
+         date >= ymd("2022-07-01")) %>%
+  ggplot(aes(x=date, y=new_cases)) +
+  geom_bar(stat="identity", fill="darksalmon") +
+  geom_vline(xintercept=ymd("2022-08-14"), linetype=2, size=1) +
+  annotate("text",
+           x = ymd("2022-08-06"),
+           y = 3000,
+           label = "Aug 14th - Patient zero
+of Omega Variant attends
+a baseball game") +
+  ylab("New Cases") +
+  xlab("Date")
+```
+
+```{r new_cases}
+# Maryland new cases since December 1st 2021
+md_cases_df %>%
+  filter(!is.na(new_cases)) %>%
+  plot_ly(type="bar", x= ~date, y= ~new_cases, name="New Cases", color=I("darksalmon")) %>%
+  add_lines(x= ~date, y= ~new_cases_7_day_avg, name="New Cases - 7 Day Average", color=I("black")) %>%
+  layout(legend = list(x = 0, y = 1),
+         hovermode = 'x')
+```
+```{r log_plotly}
+md_cases_df %>%
+  filter(!is.na(new_cases_7_day_sum),
+         !is.na(confirmed),
+         new_cases_7_day_sum != 0,
+         confirmed != 0) %>%
+  plot_ly(type="scatter", mode="lines",
+          x= ~confirmed, y= ~new_cases_7_day_sum,
+          color=I("darksalmon")) %>%
+  layout(xaxis = list(type = "log"), yaxis = list(type = "log")) %>%
+  layout(legend = list(x = 0, y = 1))
+```
+
+```{r vaccine_plots}
+md_vaccine_df %>%
+  plot_ly(x= ~date, y= ~admin_dose_1_cumulative, name="At Least 1 Dose Administered",
+          type="scatter", mode="lines", fill="tozeroy", color = I("#CCE6FF")) %>%
+  add_lines(x= ~date, y= ~series_complete_cumulative, name="Fully Vaccinated",
+            fill="tozeroy", color = I("#80BFFF")) %>%
+  add_lines(x= ~date, y= ~booster_cumulative, name="At Least 1 Booster Shot Administered",
+            fill="tozeroy", color = I("#3399FF")) %>%
+    add_lines(x= ~date, y= ~second_booster_50plus_cumulative, name="Second Booster Administered (50+ Y/O's)",
+            fill="tozeroy", color = I("#0080ff")) %>%
+  layout(legend = list(x = 0, y = 1),
+         hovermode = 'x')
+  
+```

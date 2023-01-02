@@ -1,0 +1,10 @@
+---
+title: "README"
+author: "Daniel DeWaters"
+date: "8/16/2021"
+output: html_document
+---
+
+## References
+Marcelo Ponce, Amit Sandhel (2020). covid19.analytics: An R Package to Obtain, Analyze and Visualize Data from the Corona Virus
+  Disease Pandemic. URL https://arxiv.org/abs/2009.01091
