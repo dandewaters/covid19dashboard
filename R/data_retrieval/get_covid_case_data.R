@@ -44,7 +44,8 @@ get_covid_case_data <- function(todays_case_data_file_name, force_reload=FALSE){
              new_cases_7_day_avg_change = new_cases_7_day_avg - lag(new_cases_7_day_avg),
              new_cases_7_day_sum = frollsum(new_cases, 7, fill=NA, align="right", na.rm=TRUE, hasNA=TRUE),
              new_cases_7_day_sum_change = new_cases_7_day_sum - lag(new_cases_7_day_sum)) %>%
-      ungroup()
+      ungroup() %>%
+      select(-c(id, recovered, new_recovered, latitude, longitude))
 
     # Save today's data to an RData file
     saveRDS(case_data, todays_case_data_file_name)
