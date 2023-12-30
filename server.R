@@ -30,8 +30,8 @@ server <-
       county_district_choices$county_district
     })
 
-    observe({updateSelectInput(session, "state_province", choices = get_state_province_choices())})
-    observe({updateSelectInput(session, "county_district", choices = get_county_district_choices())})
+    observe({updatePickerInput(session, "state_province",  choices = get_state_province_choices())})
+    observe({updatePickerInput(session, "county_district", choices = get_county_district_choices())})
 
     filtered_case_data <- reactive({case_data %>%
         filter(country_region == input$country_region,
