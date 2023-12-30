@@ -26,7 +26,7 @@ body <-
       tabItem(tabName = "case",
               titlePanel("COVID-19 Case Data"),
               fluidRow(
-                column(2, box(title="Filters", status = "primary", width = 12,
+                column(2, box(title="Filters", status = "primary", solidHeader = TRUE, width = 12,
                               pickerInput('country_region', 'Country',
                                           choices  = levels(case_data$country_region),
                                           selected = "Worldwide",
@@ -45,14 +45,16 @@ body <-
                                           multiple = FALSE,
                                           options = list(`actions-box` = TRUE,
                                                          `live-search` = TRUE)))),
-                column(5, plotlyOutput("new_covid_cases_plot")),
-                column(5, plotlyOutput("covid_log_plot"))
+                column(5, box(title="New Cases Over Time", status = "primary", solidHeader = TRUE, width = 12,
+                              plotlyOutput("new_covid_cases_plot"))),
+                column(5, box(title="Covid Log Plot", status = "primary", solidHeader = TRUE, width = 12,
+                              plotlyOutput("covid_log_plot")))
               )
       ),
       tabItem(tabName = "vaccine",
               titlePanel("COVID-19 Vaccine Data"),
               fluidRow(
-                column(2, box(title="Filters", status = "primary", width = 12,
+                column(2, box(title="Filters", status = "primary", solidHeader = TRUE, width = 12,
                               pickerInput('vaccine_state', 'State/Territory',
                                           choices  = levels(vaccine_data$location),
                                           selected = "United States",
@@ -60,11 +62,13 @@ body <-
                                           options = list(`actions-box` = TRUE,
                                                          `live-search` = TRUE)),
                               radioButtons("vaccine_cum_pct_selection", "Aggregation", choices = c("Cumulative", "% Vaccinated")))),
-                column(5, plotlyOutput("covid_vaccine_plot"))
+                column(5, box(title="Vaccine Doses Over Time", status = "primary", solidHeader = TRUE, width = 12,
+                              plotlyOutput("covid_vaccine_plot")))
               )
-      )
+      ),
+      tabItem(tabName = "references",
+              titlePanel("References"))
     )
   )
-
 
 dashboardPage(header, sidebar, body)
