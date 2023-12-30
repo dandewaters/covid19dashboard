@@ -62,7 +62,7 @@ body <-
                                           options = list(`actions-box` = TRUE,
                                                          `live-search` = TRUE)),
                               radioButtons("vaccine_cum_pct_selection", "Aggregation", choices = c("Cumulative", "% Vaccinated")))),
-                column(5, box(title="Vaccine Doses Over Time", status = "primary", solidHeader = TRUE, width = 12,
+                column(5, box(title="Vaccine Doses Administered Over Time", status = "primary", solidHeader = TRUE, width = 12,
                               plotlyOutput("covid_vaccine_plot")))
               )
       ),
